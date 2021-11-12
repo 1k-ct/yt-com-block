@@ -1,11 +1,14 @@
 import React from "react";
-import "./App.css";
 import Switch from "@mui/material/Switch";
 import FormGroup from "@mui/material/FormGroup";
 import FormControlLabel from "@mui/material/FormControlLabel";
-import { makeStyles, styled } from "@mui/material/styles";
+import { styled } from "@mui/material/styles";
 import { Box, Button, CssBaseline, TextField, Typography } from "@mui/material";
-import { color, minWidth } from "@mui/system";
+import {
+  loadUserPreference,
+  saveUserPreference,
+  userPreference,
+} from "../storage";
 
 const Android12Switch = styled(Switch)(({ theme }) => ({
   padding: 8,
@@ -41,14 +44,29 @@ const Android12Switch = styled(Switch)(({ theme }) => ({
 }));
 
 export default function App() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    // eslint-disable-next-line no-console
-    const word = data.get("words");
-    const user = data.get("user");
-    console.log(word);
-    console.log(user);
+
+    const word = String(data.get("words"));
+    const channelID = String(data.get("channelID"));
+    if (word.length == 0 && channelID.length == 0) return;
+
+    let defaultUserPreference: userPreference = {
+      enable: true,
+      forbiddenWords: [],
+      forbiddenChannels: [],
+    };
+    let userPreference =
+      (await loadUserPreference("key")) ?? defaultUserPreference;
+    if (channelID.length != 0) {
+      userPreference.forbiddenChannels.push(channelID);
+    }
+    if (word.length != 0) {
+      userPreference.forbiddenWords.push(word);
+    }
+
+    await saveUserPreference("key", userPreference);
   };
   return (
     <div
@@ -63,17 +81,6 @@ export default function App() {
         color: "white",
       }}
     >
-      {/* <header
-        style={{
-          backgroundColor: "#282c34",
-          minWidth: "400px",
-          minHeight: "400px",
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          color: "white",
-        }}
-      > */}
       <CssBaseline />
       <Box
         sx={{
@@ -103,22 +110,22 @@ export default function App() {
             label="words"
             name="words"
             autoComplete="words"
-            // autoFocus
             focused
             color="success"
+            sx={{ input: { color: "white" } }}
           />
           <TextField
             margin="normal"
             required
             variant="filled"
             fullWidth
-            id="user"
-            label="user"
-            name="user"
-            autoComplete="user"
-            // autoFocus
+            id="channelID"
+            label="channelID"
+            name="channelID"
+            autoComplete="channelID"
             focused
             color="success"
+            sx={{ input: { color: "white" } }}
           />
           <Button
             type="submit"
@@ -131,7 +138,6 @@ export default function App() {
           </Button>
         </Box>
       </Box>
-      {/* </header> */}
     </div>
   );
 }
@@ -143,23 +149,14 @@ function BasicSwitch({ label }: { label: string }) {
     setChecked(event.target.checked);
   };
 
-  // const booLabel = (is: boolean): string => {
-  //   if (is) {
-  //     return "Android12";
-  //   }
-  //   return "Android13";
-  // };
-
   return (
     <FormGroup>
       <FormControlLabel
         checked={checked}
         onChange={handleChange}
         control={<Android12Switch defaultChecked color="success" />}
-        // label={booLabel(checked)}
         label={label}
         sx={{ color: "white" }}
-      // style={{ color: "white", minWidth: "350px" }}
       />
     </FormGroup>
   );
