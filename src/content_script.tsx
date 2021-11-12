@@ -8,6 +8,8 @@
 //   }
 // });
 
+import { loadUserPreference, userPreference } from "./storage";
+
 // "mousemove"
 // window.addEventListener("load", () => {
 // const hideAuthorUrl = "https://www.youtube.com/channel/UCc2wedtOnhtIrf0Yvw48GJg";
@@ -39,102 +41,114 @@
 //   hideComments(url2);
 // })
 
-
 const hideAllPosts = () => {
   const contentSections = document.querySelectorAll<HTMLElement>("#content");
   for (const section of contentSections) {
-
     const titleSection = section.querySelector<HTMLElement>("#title");
 
     if (titleSection === null) return;
     try {
       if (titleSection.innerHTML === "最新の YouTube 投稿") {
-        section.style.display = "none"
+        section.style.display = "none";
       }
     } catch (e) {
-      console.log(e)
+      console.log(e);
     }
-  };
-}
+  }
+};
 
 const hideTopBar = () => {
   const header = "#header > ytd-feed-filter-chip-bar-renderer";
-  const headerSection = document.querySelector<HTMLElement>(header)
+  const headerSection = document.querySelector<HTMLElement>(header);
 
   if (headerSection === null) return;
 
-  headerSection.style.display = 'none';
-}
+  headerSection.style.display = "none";
+};
 
 const hideDislike = () => {
-  const dislike = "#top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(2)";
-  const dislikeSection = document.querySelector<HTMLElement>(dislike)
+  const dislike =
+    "#top-level-buttons-computed > ytd-toggle-button-renderer:nth-child(2)";
+  const dislikeSection = document.querySelector<HTMLElement>(dislike);
 
   if (dislikeSection === null) return;
 
-  dislikeSection.style.display = 'none';
-}
+  dislikeSection.style.display = "none";
+};
 
 const hideSentimentBarRenderer = (selector: string) => {
   // const selector = "#sentiment"
-  const selectorSection = document.querySelector<HTMLElement>(selector)
+  const selectorSection = document.querySelector<HTMLElement>(selector);
 
   if (selectorSection === null) return;
 
-  selectorSection.style.display = 'none';
-}
+  selectorSection.style.display = "none";
+};
 
 interface ElementHref extends HTMLElement {
   href: string | null;
 }
 
 export const hideComments = (channelID: string) => {
-  const content = "#contents > ytd-comment-thread-renderer";
-  const contentSection = document.querySelectorAll<HTMLElement>(content);
+  try {
+    const content = "#contents > ytd-comment-thread-renderer";
+    const contentSection = document.querySelectorAll<HTMLElement>(content);
 
-  for (const i of contentSection) {
-    const channelSection = i.querySelector<ElementHref>("#author-text");
+    for (const i of contentSection) {
+      const channelSection = i.querySelector<ElementHref>("#author-text");
 
-    if (channelSection === null) return;
+      if (channelSection === null) return;
 
-    if (channelSection.href == channelID) {
-      i.style.display = 'none';
+      if (channelSection.href == channelID) {
+        i.style.display = "none";
+      }
     }
+  } catch (e) {
+    console.log(e);
   }
-}
+};
 
 export const hideAuthorItem = (channelID: string) => {
-  const content = "#contents > ytd-comment-renderer"
-  const authorTextSection = document.querySelectorAll<ElementHref>(content)
-  if (authorTextSection === null) return;
+  try {
+    const content = "#contents > ytd-comment-renderer";
+    const authorTextSection = document.querySelectorAll<ElementHref>(content);
+    if (authorTextSection === null) return;
 
-  for (const s of authorTextSection) {
-    const authorSection = s.querySelector<ElementHref>("#author-text")
-    if (authorSection === null) return;
+    for (const s of authorTextSection) {
+      const authorSection = s.querySelector<ElementHref>("#author-text");
+      if (authorSection === null) return;
 
-    if (authorSection.href == channelID) {
-      s.style.display = "none";
+      if (authorSection.href == channelID) {
+        s.style.display = "none";
+      }
     }
+  } catch (e) {
+    console.log(e);
   }
+};
 
-}
-window.addEventListener("scroll", () => {
+document.getElementById("replies")?.addEventListener("change", () => {
   const hideAuthorUrl =
-    "https://www.youtube.com/channel/UCgEpTkAR1FXIGewpU2sqYHA";
+    "https://www.youtube.com/channel/UCP0x3qewLOX2NeMunrUQW3Q";
   hideAuthorItem(hideAuthorUrl);
   hideComments(hideAuthorUrl);
-  const url = "https://www.youtube.com/channel/UCLRBBKxOeyfG2ORAtM4joeg";
+  const url = "https://www.youtube.com/channel/UC0fhkDONgI0OIxrq-HxvLAw";
   hideAuthorItem(url);
   hideComments(url);
-  const url2 = "https://www.youtube.com/channel/UCgEpTkAR1FXIGewpU2sqYHA";
-  hideAuthorItem(url2);
-  hideComments(url2);
+});
+window.addEventListener("scroll", async () => {
+  let defaultUserPreference: userPreference = {
+    enable: true,
+    forbiddenWords: [],
+    forbiddenChannels: [],
+  };
+  let userPreference =
+    (await loadUserPreference("key")) ?? defaultUserPreference;
 
-  const url3 = "https://www.youtube.com/channel/UCLRBBKxOeyfG2ORAtM4joeg";
-  hideAuthorItem(url3);
-  hideComments(url3);
-
-  const url4 = "https://www.youtube.com/channel/UCEjTcEJeUaHviyurFz5XuZw";
-  hideAuthorItem(url4);
-  hideComments(url4);
+  const baseURL = "https://www.youtube.com/channel/";
+  if (!userPreference.enable) return;
+  for (const url of userPreference.forbiddenChannels) {
+    hideAuthorItem(baseURL + url);
+    hideComments(baseURL + url);
+  }
 });
