@@ -1,70 +1,17 @@
-# Chrome Extension TypeScript Starter
+# Chrome Extension YouTube comment block
 
-![build](https://github.com/chibat/chrome-extension-typescript-starter/workflows/build/badge.svg)
+## Register a prohibited channel ID.
 
-Chrome Extension, TypeScript and Visual Studio Code
+![register](https://github.com/1k-ct/yt-com-block/docs/regist-popup.png "register")
 
-## Prerequisites
+## before
 
-* [node + npm](https://nodejs.org/) (Current Version)
+![comment](https://github.com/1k-ct/yt-com-block/docs/comment1.png "comment")
 
-## Option
+## after
 
-* [Visual Studio Code](https://code.visualstudio.com/)
+![comment](https://github.com/1k-ct/yt-com-block/docs/comment2.png "comment")
 
-## Includes the following
+## note
 
-* TypeScript
-* Webpack
-* React
-* Jest
-* Example Code
-    * Chrome Storage
-    * Options Version 2
-    * content script
-    * count up badge number
-    * background
-
-## Project Structure
-
-* src/typescript: TypeScript source files
-* src/assets: static files
-* dist: Chrome Extension directory
-* dist/js: Generated JavaScript files
-
-## Setup
-
-```
-npm install
-```
-
-## Import as Visual Studio Code project
-
-...
-
-## Build
-
-```
-npm run build
-```
-
-## Build in watch mode
-
-### terminal
-
-```
-npm run watch
-```
-
-### Visual Studio Code
-
-Run watch mode.
-
-type `Ctrl + Shift + B`
-
-## Load extension to chrome
-
-Load `dist` directory
-
-## Test
-`npx jest` or `npm run test`
+Not open to the public.
