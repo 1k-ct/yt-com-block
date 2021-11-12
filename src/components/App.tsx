@@ -57,8 +57,9 @@ export default function App() {
       forbiddenWords: [],
       forbiddenChannels: [],
     };
+    const key = "user_preference_json_key";
     let userPreference =
-      (await loadUserPreference("key")) ?? defaultUserPreference;
+      (await loadUserPreference(key)) ?? defaultUserPreference;
     if (channelID.length != 0) {
       userPreference.forbiddenChannels.push(channelID);
     }
@@ -66,7 +67,7 @@ export default function App() {
       userPreference.forbiddenWords.push(word);
     }
 
-    await saveUserPreference("key", userPreference);
+    await saveUserPreference(key, userPreference);
   };
   return (
     <div
