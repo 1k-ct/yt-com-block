@@ -1,45 +1,6 @@
-// chrome.runtime.onMessage.addListener(function (msg, sender, sendResponse) {
-//   if (msg.color) {
-//     console.log("Receive color = " + msg.color);
-//     document.body.style.backgroundColor = msg.color;
-//     sendResponse("Change color to " + msg.color);
-//   } else {
-//     sendResponse("Color message is none.");
-//   }
-// });
-
 import { loadUserPreference, userPreference } from "./storage";
 
 // "mousemove"
-// window.addEventListener("load", () => {
-// const hideAuthorUrl = "https://www.youtube.com/channel/UCc2wedtOnhtIrf0Yvw48GJg";
-
-// const hideAuthorUrl = "https://www.youtube.com/channel/UCLRBBKxOeyfG2ORAtM4joeg"
-// hideAuthorItem(hideAuthorUrl);
-// hideComments(hideAuthorUrl);
-// });
-
-// window.addEventListener("scroll", () => {
-//   const hideAuthorUrl = "https://www.youtube.com/channel/UCgEpTkAR1FXIGewpU2sqYHA";
-//   hideAuthorItem(hideAuthorUrl);
-//   hideComments(hideAuthorUrl);
-//   const url = "https://www.youtube.com/channel/UCLRBBKxOeyfG2ORAtM4joeg";
-//   hideAuthorItem(url)
-//   hideComments(url);
-// })
-// window.addEventListener("click", () => {
-//   const hideAuthorUrl = "https://www.youtube.com/channel/UCgEpTkAR1FXIGewpU2sqYHA";
-//   hideAuthorItem(hideAuthorUrl);
-//   hideComments(hideAuthorUrl);
-
-//   const url = "https://www.youtube.com/channel/UCLRBBKxOeyfG2ORAtM4joeg"
-//   hideAuthorItem(url)
-//   hideComments(url);
-
-//   const url2 = "https://www.youtube.com/channel/UCEjTcEJeUaHviyurFz5XuZw";
-//   hideAuthorItem(url2);
-//   hideComments(url2);
-// })
 
 const hideAllPosts = () => {
   const contentSections = document.querySelectorAll<HTMLElement>("#content");
