@@ -88,15 +88,6 @@ export const hideAuthorItem = (channelID: string) => {
   }
 };
 
-document.getElementById("replies")?.addEventListener("change", () => {
-  const hideAuthorUrl =
-    "https://www.youtube.com/channel/UCP0x3qewLOX2NeMunrUQW3Q";
-  hideAuthorItem(hideAuthorUrl);
-  hideComments(hideAuthorUrl);
-  const url = "https://www.youtube.com/channel/UC0fhkDONgI0OIxrq-HxvLAw";
-  hideAuthorItem(url);
-  hideComments(url);
-});
 window.addEventListener("scroll", async () => {
   let defaultUserPreference: userPreference = {
     enable: true,
