@@ -45,11 +45,49 @@ const hideSentimentBarRenderer = (selector: string) => {
 
   selectorSection.style.display = "none";
 };
+interface content {
+  user: string;
+  targetElement: ElementHref;
+}
 
+function contentSelector(conType: "default" | "reply"): string {
+  if (conType == "default") {
+    return "#contents > ytd-comment-thread-renderer";
+  }
+  return "#contents > ytd-comment-renderer";
+}
+const extractContentsCommentAuthor = (
+  contentType: "default" | "reply"
+): content[] => {
+  const selector = contentSelector(contentType);
+
+  const contentSection = document.querySelectorAll<HTMLElement>(selector);
+
+  const contents: content[] = [];
+
+  for (const iSection of contentSection) {
+    const channelSection = iSection.querySelector<ElementHref>("#author-text");
+    if (channelSection === null) break;
+    if (channelSection.href === null) break;
+
+    contents.push({
+      user: channelSection.href,
+      targetElement: channelSection,
+    });
+  }
+  return contents;
+};
+const hideCommentsV2 = (channelID: string, contents: content[]) => {
+  for (const iContent of contents) {
+    if (iContent.user == channelID) {
+      iContent.targetElement.style.display = "none";
+    }
+  }
+};
 interface ElementHref extends HTMLElement {
   href: string | null;
 }
-
+// おおもとのコメント
 export const hideComments = (channelID: string) => {
   try {
     const content = "#contents > ytd-comment-thread-renderer";
@@ -69,11 +107,12 @@ export const hideComments = (channelID: string) => {
   }
 };
 
+// リプライのコメント
 export const hideAuthorItem = (channelID: string) => {
   try {
     const content = "#contents > ytd-comment-renderer";
-    const authorTextSection = document.querySelectorAll<ElementHref>(content);
-    if (authorTextSection === null) return;
+    const authorTextSection = document.querySelectorAll<HTMLElement>(content);
+    // if (authorTextSection === null) return;
 
     for (const s of authorTextSection) {
       const authorSection = s.querySelector<ElementHref>("#author-text");
