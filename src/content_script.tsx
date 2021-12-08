@@ -45,7 +45,7 @@ const hideSentimentBarRenderer = (selector: string) => {
 
   selectorSection.style.display = "none";
 };
-interface content {
+export interface content {
   user: string;
   targetElement: ElementHref;
 }
@@ -56,35 +56,46 @@ function contentSelector(conType: "default" | "reply"): string {
   }
   return "#contents > ytd-comment-renderer";
 }
-const extractContentsCommentAuthor = (
-  contentType: "default" | "reply"
-): content[] => {
+interface commentElements {
+  commentRender: NodeListOf<HTMLElement>;
+  contentAuthorText: ElementHref[];
+}
+const extractElements = (contentType: "default" | "reply"): ElementHref[] => {
+  // const comment = {} as commentElements;
   const selector = contentSelector(contentType);
+  const elements: ElementHref[] = [];
 
   const contentSection = document.querySelectorAll<HTMLElement>(selector);
 
-  const contents: content[] = [];
+  // comment.commentRender = contentSection;
 
   for (const iSection of contentSection) {
     const channelSection = iSection.querySelector<ElementHref>("#author-text");
     if (channelSection === null) break;
-    if (channelSection.href === null) break;
-
-    contents.push({
-      user: channelSection.href,
-      targetElement: channelSection,
-    });
+    // comment.contentAuthorText.push(channelSection);
+    elements.push(channelSection);
   }
-  return contents;
+  return elements;
 };
-const hideCommentsV2 = (channelID: string, contents: content[]) => {
+
+const hideCommentAuthor = (
+  channelID: string,
+  contents: ElementHref[]
+): void => {
+  for (const iSection of contents) {
+    if (iSection.href == channelID) {
+      iSection.style.display = "none";
+    }
+  }
+};
+export const hideCommentsV2 = (channelID: string, contents: content[]) => {
   for (const iContent of contents) {
     if (iContent.user == channelID) {
       iContent.targetElement.style.display = "none";
     }
   }
 };
-interface ElementHref extends HTMLElement {
+export interface ElementHref extends HTMLElement {
   href: string | null;
 }
 // おおもとのコメント
