@@ -20,26 +20,27 @@
   "dependencies": {
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
-    "@mui/material": "^5.12.3",
+    "@mui/material": "^5.14.3",
     "@types/node": "^20.1.2",
     "react": "^17.0.1",
     "react-dom": "^17.0.1"
   },
   "devDependencies": {
-    "@types/chrome": "^0.0.180",
+    "@types/chrome": "^0.0.243",
     "@types/jest": "^27.5.0",
     "@types/react": "^17.0.34",
     "@types/react-dom": "^17.0.11",
     "copy-webpack-plugin": "^11.0.0",
-    "glob": "^7.1.6",
+    "glob": "^10.3.3",
     "jest": "^27.3.1",
-    "prettier": "^2.6.0",
+    "prettier": "^3.0.1",
     "rimraf": "^3.0.2 ",
     "ts-jest": "^27.0.7",
-    "ts-loader": "^9.2.8",
+    "ts-loader": "^9.4.4",
     "typescript": "^4.9.5",
     "webpack": "^5.88.2",
-    "webpack-cli": "^4.9.1",
+    "webpack-cli": "^5.1.4",
+
     "webpack-merge": "^5.0.0"
   }
 }
